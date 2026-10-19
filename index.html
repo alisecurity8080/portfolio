@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aliyan (Ali) | Cybersecurity & Developer Portfolio</title>
+    <title>Aliyan (Ali) | Cybersecurity Researcher & Python Developer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans leading-normal tracking-normal">
+<body class="bg-gray-900 text-gray-100 font-sans leading-normal tracking-normal scroll-smooth">
 
     <!-- Pop-up Modal -->
-    <div id="cvModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 transition-opacity duration-300">
-        <div class="bg-gray-800 border border-green-500/50 p-6 rounded-2xl shadow-2xl text-center max-w-sm mx-4 transform scale-100 transition-all">
+    <div id="cvModal" class="fixed inset-0 bg-black/75 flex items-center justify-center z-50 transition-opacity duration-300">
+        <div class="bg-gray-800 border border-green-500/50 p-6 rounded-2xl shadow-2xl text-center max-w-sm mx-4">
             <div class="w-16 h-16 bg-green-500/10 text-green-400 rounded-full flex items-center justify-center mx-auto mb-4 border border-green-400/30">
                 <i class="fas fa-file-download text-2xl"></i>
             </div>
-            <h3 class="text-xl font-bold text-white mb-2">Ali's CV Download Started!</h3>
+            <h3 class="text-xl font-bold text-white mb-2">CV Download Started!</h3>
             <p class="text-gray-300 text-sm mb-6">
-                Aliyan (Ali) ki updated cybersecurity CV aapke device par download ho rahi hai.
+                Aliyan (Ali) ki updated cybersecurity & developer CV download ho rahi hai.
             </p>
             <button onclick="closeModal()" class="w-full bg-green-500 hover:bg-green-600 text-gray-900 font-bold py-2.5 px-4 rounded-xl transition">
                 Continue to Portfolio
@@ -28,12 +28,13 @@
     <!-- Hidden Download Anchor -->
     <a id="autoCvLink" href="Ali_CV.pdf" download="Ali_CV.pdf" class="hidden"></a>
 
-    <!-- Navigation -->
-    <nav class="p-5 bg-gray-800 fixed w-full top-0 z-50 border-b border-gray-700">
+    <!-- Navigation Bar -->
+    <nav class="p-5 bg-gray-800/90 backdrop-blur fixed w-full top-0 z-40 border-b border-gray-700">
         <div class="container mx-auto max-w-5xl flex justify-between items-center">
-            <a href="#" class="text-xl font-bold text-green-400">&lt;Ali /&gt;</a>
-            <div class="space-x-6 text-sm font-semibold">
-                <a href="#about" class="hover:text-green-400 transition">About</a>
+            <a href="#about" class="text-xl font-mono font-bold text-green-400">&lt;Ali /&gt;</a>
+            <div class="space-x-4 md:space-x-6 text-sm font-semibold">
+                <a href="#index" class="hover:text-green-400 transition">Index</a>
+                <a href="#summary" class="hover:text-green-400 transition">Summary</a>
                 <a href="#skills" class="hover:text-green-400 transition">Skills</a>
                 <a href="#projects" class="hover:text-green-400 transition">Projects</a>
                 <a href="#contact" class="hover:text-green-400 transition">Contact</a>
@@ -42,13 +43,13 @@
     </nav>
 
     <!-- Hero / About Section -->
-    <section id="about" class="pt-32 pb-20 px-6 max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between">
-        <div class="md:w-2/3 space-y-4">
+    <section id="about" class="pt-32 pb-16 px-6 max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between">
+        <div class="md:w-3/4 space-y-4">
             <span class="text-green-400 font-mono text-sm">Hi, my name is</span>
             <h1 class="text-4xl md:text-5xl font-extrabold text-white">Aliyan (Ali)</h1>
-            <h2 class="text-2xl text-gray-400">Security Enthusiast & Python Developer</h2>
-            <p class="text-gray-300 max-w-lg">
-                Karachi-based security researcher focused on Web Application Security, logic flaws, and backend automation. Specialized in IDOR, CSRF, and Business Logic Vulnerabilities.
+            <h2 class="text-2xl text-gray-400 font-semibold">Security Researcher & Advanced Python Automation Specialist</h2>
+            <p class="text-gray-300 leading-relaxed">
+                Karachi-based security researcher focused on Web Application Security, Linux environment workflows, and Python backend automation. Comfortable in writing custom security tools, testing business logic flaws, and command-line automation.
             </p>
             <div class="pt-4 flex flex-wrap gap-4">
                 <a href="https://github.com/alisecurity8080" target="_blank" class="bg-green-500 hover:bg-green-600 text-gray-900 px-5 py-2.5 rounded-lg font-bold transition flex items-center gap-2">
@@ -61,85 +62,211 @@
         </div>
     </section>
 
-    <!-- Core Skills Section -->
+    <!-- Quick Index Section -->
+    <section id="index" class="py-12 bg-gray-800/50 border-t border-b border-gray-700">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-2xl font-bold text-green-400 mb-6 font-mono">&lt; Quick_Index /&gt;</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <a href="#summary" class="p-4 bg-gray-800 rounded-lg border border-gray-700 hover:border-green-400 transition flex items-center gap-3">
+                    <i class="fas fa-user-circle text-green-400"></i> <span>01. Summary</span>
+                </a>
+                <a href="#skills" class="p-4 bg-gray-800 rounded-lg border border-gray-700 hover:border-green-400 transition flex items-center gap-3">
+                    <i class="fas fa-tools text-green-400"></i> <span>02. Skills & Linux</span>
+                </a>
+                <a href="#projects" class="p-4 bg-gray-800 rounded-lg border border-gray-700 hover:border-green-400 transition flex items-center gap-3">
+                    <i class="fas fa-code text-green-400"></i> <span>03. Repositories</span>
+                </a>
+                <a href="https://github.com/alisecurity8080" target="_blank" class="p-4 bg-gray-800 rounded-lg border border-gray-700 hover:border-green-400 transition flex items-center gap-3">
+                    <i class="fab fa-github text-green-400"></i> <span>04. GitHub Profile</span>
+                </a>
+                <a href="mailto:alisecurity8080@gmail.com" class="p-4 bg-gray-800 rounded-lg border border-gray-700 hover:border-green-400 transition flex items-center gap-3">
+                    <i class="fas fa-envelope text-green-400"></i> <span>05. Gmail Contact</span>
+                </a>
+                <a href="tel:03222264829" class="p-4 bg-gray-800 rounded-lg border border-gray-700 hover:border-green-400 transition flex items-center gap-3">
+                    <i class="fas fa-phone text-green-400"></i> <span>06. Call Mobile</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Summary Section -->
+    <section id="summary" class="py-16 max-w-5xl mx-auto px-6">
+        <h2 class="text-3xl font-bold text-white mb-6">Professional Summary</h2>
+        <div class="bg-gray-800 p-8 rounded-xl border border-gray-700 space-y-4 text-gray-300">
+            <p>
+                Main Web Application Vulnerability Analysis, Business Logic Flaws (IDOR, CSRF), aur Python-based automation scripts par specialization rakhta hoon.
+            </p>
+            <p>
+                <strong>Linux Environments:</strong> Linux CLI (Ubuntu via WSL 2) par comfortable hoon. Linux terminal ke andar files manipulate karna, automation scripts build karna aur security tools configure karna meri daily practice ka hissa hai.
+            </p>
+            <p>
+                <strong>Python Capabilities:</strong> Advance logic building using loops (`for`, `while`), conditional control flow (`if-elif-else`), custom functions, data structures (Lists, Dicts, Tuples, Sets), file handling (I/O), exception logging, aur network socket interaction.
+            </p>
+        </div>
+    </section>
+
+    <!-- Core Skills & Linux Terminal Section -->
     <section id="skills" class="py-16 bg-gray-800 border-t border-b border-gray-700">
         <div class="max-w-5xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center text-white mb-10">Core Vulnerabilities & Skills</h2>
+            <h2 class="text-3xl font-bold text-center text-white mb-10">Skills & Technical Capabilities</h2>
+            
             <div class="grid md:grid-cols-3 gap-6">
                 <!-- Skill 1 -->
                 <div class="bg-gray-900 p-6 rounded-xl border border-gray-700 hover:border-green-400 transition">
-                    <i class="fas fa-bug text-3xl text-green-400 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">IDOR Exploitation</h3>
-                    <p class="text-gray-400 text-sm">Testing unauthorized parameter modifications, access control bypasses, and object-level flaws.</p>
+                    <i class="fab fa-linux text-3xl text-green-400 mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">Linux Terminal & CLI</h3>
+                    <p class="text-gray-400 text-sm">Comfortable operating inside Ubuntu/Linux CLI, bash scripting basics, process management, and running Python automation natively.</p>
                 </div>
                 <!-- Skill 2 -->
                 <div class="bg-gray-900 p-6 rounded-xl border border-gray-700 hover:border-green-400 transition">
-                    <i class="fas fa-shield-alt text-3xl text-green-400 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">CSRF Analysis</h3>
-                    <p class="text-gray-400 text-sm">Crafting custom PoC exploits, analyzing token validations, and testing SameSite cookie behaviors.</p>
+                    <i class="fab fa-python text-3xl text-green-400 mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">Advance Python Logic</h3>
+                    <p class="text-gray-400 text-sm">Mastery over loops, conditional flows, error handling, socket connections, HTTP inspectors, and file operation tools.</p>
                 </div>
                 <!-- Skill 3 -->
                 <div class="bg-gray-900 p-6 rounded-xl border border-gray-700 hover:border-green-400 transition">
-                    <i class="fas fa-cogs text-3xl text-green-400 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">Business Logic Flaws</h3>
-                    <p class="text-gray-400 text-sm">Identifying workflow bypasses, privilege escalations, and functional manipulation in web logic.</p>
+                    <i class="fas fa-bug text-3xl text-green-400 mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">Web Security & PoC</h3>
+                    <p class="text-gray-400 text-sm">Testing IDOR, CSRF, and Business Logic flaws using Burp Suite (Repeater, Intruder, Match & Replace) and custom PoCs.</p>
                 </div>
             </div>
 
-            <!-- Tool Stack -->
+            <!-- Detailed Tool Stack -->
             <div class="mt-10 bg-gray-900 p-6 rounded-xl border border-gray-700">
-                <h3 class="text-lg font-bold text-green-400 mb-3">Tooling & Environment</h3>
-                <p class="text-gray-300 text-sm">Burp Suite (Proxy, Repeater, Intruder, Match & Replace), Python 3, Linux CLI (Ubuntu via WSL 2), Git/GitHub, TCP/IP & HTTP Header Analysis.</p>
+                <h3 class="text-lg font-bold text-green-400 mb-3">Complete Tool Stack & OS Setup</h3>
+                <p class="text-gray-300 text-sm leading-relaxed">
+                    Linux CLI (Ubuntu on WSL 2), Python 3, Burp Suite Professional/Community, Git & GitHub Version Control, Visual Studio Code, TCP/IP Network Analysis, HTTP Header Inspection.
+                </p>
             </div>
         </div>
     </section>
 
-    <!-- Projects Section -->
+    <!-- Specific Projects Section -->
     <section id="projects" class="py-16 max-w-5xl mx-auto px-6">
-        <h2 class="text-3xl font-bold text-center text-white mb-10">Featured Work</h2>
+        <h2 class="text-3xl font-bold text-center text-white mb-2">Featured Repositories</h2>
+        <p class="text-center text-gray-400 mb-10 text-sm">Direct links to my open-source projects on GitHub</p>
+
         <div class="grid md:grid-cols-2 gap-6">
-            <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
-                <h3 class="text-xl font-bold text-white mb-2">Web Application Exploitation PoCs</h3>
-                <p class="text-gray-400 text-sm mb-4">Hands-on security testing labs focusing on HTTP parameter tampering, CSRF PoC generation, and IDOR flaw discovery using Burp Suite.</p>
-                <span class="text-xs bg-gray-700 text-green-400 px-2.5 py-1 rounded">Security Research</span>
+            <!-- Project 1 -->
+            <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 flex flex-col justify-between hover:border-green-400 transition">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-xl font-bold text-white">Recon Tool</h3>
+                        <i class="fas fa-search text-green-400"></i>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Automated reconnaissance script for gathering target intelligence and domain info.</p>
+                </div>
+                <a href="https://github.com/alisecurity8080/recon_tool" target="_blank" class="inline-flex items-center text-green-400 font-bold hover:underline text-sm gap-2">
+                    View on GitHub <i class="fas fa-external-link-alt text-xs"></i>
+                </a>
             </div>
-            <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
-                <h3 class="text-xl font-bold text-white mb-2">Python Automation Tools</h3>
-                <p class="text-gray-400 text-sm mb-4">Custom command-line Python scripts utilizing file handling, error logging, and conditional logic for basic task automation.</p>
-                <span class="text-xs bg-gray-700 text-green-400 px-2.5 py-1 rounded">Python</span>
+
+            <!-- Project 2 -->
+            <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 flex flex-col justify-between hover:border-green-400 transition">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-xl font-bold text-white">Python File Operations Toolkit</h3>
+                        <i class="fas fa-folder-open text-green-400"></i>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Utility for handling advanced file I/O operations, directory parsing, and data sanitization in Python.</p>
+                </div>
+                <a href="https://github.com/alisecurity8080/Python-File-Operations-Toolkit" target="_blank" class="inline-flex items-center text-green-400 font-bold hover:underline text-sm gap-2">
+                    View on GitHub <i class="fas fa-external-link-alt text-xs"></i>
+                </a>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 flex flex-col justify-between hover:border-green-400 transition">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-xl font-bold text-white">TTP Header Inspector</h3>
+                        <i class="fas fa-shield-alt text-green-400"></i>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">HTTP header analysis tool for evaluating security headers, token validations, and potential misconfigurations.</p>
+                </div>
+                <a href="https://github.com/alisecurity8080/TTP-Header-Inspector" target="_blank" class="inline-flex items-center text-green-400 font-bold hover:underline text-sm gap-2">
+                    View on GitHub <i class="fas fa-external-link-alt text-xs"></i>
+                </a>
+            </div>
+
+            <!-- Project 4 -->
+            <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 flex flex-col justify-between hover:border-green-400 transition">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-xl font-bold text-white">Python Port Scanner</h3>
+                        <i class="fas fa-network-wired text-green-400"></i>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Custom multi-threaded socket-based port scanner written in Python for identifying open network ports.</p>
+                </div>
+                <a href="https://github.com/alisecurity8080/Python-Port-Scanner" target="_blank" class="inline-flex items-center text-green-400 font-bold hover:underline text-sm gap-2">
+                    View on GitHub <i class="fas fa-external-link-alt text-xs"></i>
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
+    <!-- Direct Clickable Contact Section -->
     <section id="contact" class="py-16 bg-gray-800 border-t border-gray-700 text-center">
         <div class="max-w-xl mx-auto px-6">
             <h2 class="text-3xl font-bold text-white mb-4">Get In Touch</h2>
-            <p class="text-gray-400 mb-6">Open for Junior Cybersecurity Internships, Security Trainee roles, or Python projects.</p>
-            <div class="space-y-3 text-gray-300 mb-8">
-                <p><i class="fas fa-envelope text-green-400 mr-2"></i> alisecurity8080@gmail.com</p>
-                <p><i class="fas fa-phone text-green-400 mr-2"></i> 03222264829</p>
-                <p><i class="fas fa-map-marker-alt text-green-400 mr-2"></i> Nazimabad No. 2, Karachi, Pakistan</p>
+            <p class="text-gray-400 mb-8">Open for Junior Cybersecurity Internships, Security Trainee roles, or Python projects.</p>
+            
+            <div class="space-y-4 text-left max-w-md mx-auto mb-8">
+                <!-- Clickable Email -->
+                <a href="mailto:alisecurity8080@gmail.com" class="flex items-center p-3 bg-gray-900 rounded-lg border border-gray-700 hover:border-green-400 transition text-gray-200">
+                    <i class="fas fa-envelope text-green-400 text-xl mr-4"></i>
+                    <div>
+                        <p class="text-xs text-gray-400">Click to Email</p>
+                        <p class="font-mono text-sm">alisecurity8080@gmail.com</p>
+                    </div>
+                </a>
+
+                <!-- Clickable Phone -->
+                <a href="tel:03222264829" class="flex items-center p-3 bg-gray-900 rounded-lg border border-gray-700 hover:border-green-400 transition text-gray-200">
+                    <i class="fas fa-phone text-green-400 text-xl mr-4"></i>
+                    <div>
+                        <p class="text-xs text-gray-400">Click to Call</p>
+                        <p class="font-mono text-sm">03222264829</p>
+                    </div>
+                </a>
+
+                <!-- Clickable GitHub Profile -->
+                <a href="https://github.com/alisecurity8080" target="_blank" class="flex items-center p-3 bg-gray-900 rounded-lg border border-gray-700 hover:border-green-400 transition text-gray-200">
+                    <i class="fab fa-github text-green-400 text-xl mr-4"></i>
+                    <div>
+                        <p class="text-xs text-gray-400">Click to Open GitHub</p>
+                        <p class="font-mono text-sm">github.com/alisecurity8080</p>
+                    </div>
+                </a>
+
+                <!-- Address -->
+                <div class="flex items-center p-3 bg-gray-900 rounded-lg border border-gray-700 text-gray-200">
+                    <i class="fas fa-map-marker-alt text-green-400 text-xl mr-4"></i>
+                    <div>
+                        <p class="text-xs text-gray-400">Location Address</p>
+                        <p class="text-sm">Nazimabad No. 2, Karachi, Pakistan</p>
+                    </div>
+                </div>
             </div>
-            <a href="mailto:alisecurity8080@gmail.com" class="bg-green-500 hover:bg-green-600 text-gray-900 font-bold px-6 py-3 rounded-lg transition inline-block">
+
+            <a href="mailto:alisecurity8080@gmail.com" class="bg-green-500 hover:bg-green-600 text-gray-900 font-bold px-8 py-3 rounded-lg transition inline-block">
                 Send Email
             </a>
         </div>
     </section>
 
-    <footer class="py-6 text-center text-gray-500 text-sm">
-        © 2026 Aliyan. Built for GitHub Pages.
+    <footer class="py-6 text-center text-gray-500 text-sm bg-gray-900 border-t border-gray-800">
+        © 2026 Aliyan (Ali). Built for GitHub Pages.
     </footer>
 
     <!-- JavaScript Script for Auto Download & Pop-up -->
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            // Trigger auto-download
             const link = document.getElementById('autoCvLink');
             if (link) {
                 setTimeout(() => {
                     link.click();
-                }, 500); // 0.5s delay to avoid browser block
+                }, 500);
             }
         });
 
