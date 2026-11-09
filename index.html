@@ -1,282 +1,522 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aliyan (Ali) | Cybersecurity Researcher & Automation Developer</title>
+    <meta name="description" content="Portfolio of Aliyan (Ali) - Security Researcher, Linux & Bash scripting, Python automation.">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body class="bg-black text-gray-100 font-sans leading-normal tracking-normal scroll-smooth">
 
-    <!-- Pop-up Modal -->
-    <div id="cvModal" class="fixed inset-0 bg-black/85 flex items-center justify-center z-50 transition-opacity duration-300">
-        <div class="bg-gray-900 border border-red-500/50 p-6 rounded-2xl shadow-2xl text-center max-w-sm mx-4 shadow-red-900/20">
-            <div class="w-16 h-16 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/30">
-                <i class="fas fa-file-download text-2xl"></i>
+    <style>
+        :root {
+            /* LIGHT (lamp ON) */
+            --bg: #e8f6ee; --surface: rgba(255,255,255,.78); --border: rgba(0,120,80,.32);
+            --text: #06251a; --muted: #3b6a56;
+            --a1: #00a35f; --a2: #0079b0; --a3: #d11a4a;
+            --shadow: 0 10px 40px -12px rgba(0,140,90,.35);
+            --shade: #f5b82e; --bulb: #fff6c2; --cone: 1; --wire: #5b5b5b;
+            --rain: .16; --scan: 0;
+        }
+        [data-theme="dark"] {
+            /* DARK (lamp OFF) - hacker terminal */
+            --bg: #020805; --surface: rgba(0,255,156,.045); --border: rgba(0,255,156,.28);
+            --text: #c9ffe6; --muted: #5fae8c;
+            --a1: #00ff9c; --a2: #00e5ff; --a3: #ff2e63;
+            --shadow: 0 0 40px -10px rgba(0,255,156,.45);
+            --shade: #10231b; --bulb: #1d3328; --cone: 0; --wire: #2f5a47;
+            --rain: .34; --scan: .5;
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+        body { margin: 0; font-family: 'JetBrains Mono', monospace; background: var(--bg); color: var(--text); transition: background .6s ease, color .6s ease; overflow-x: hidden; }
+        body.locked { overflow: hidden; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .head { font-family: 'Orbitron', sans-serif; }
+        .muted { color: var(--muted); }
+        .grad { background: linear-gradient(90deg, var(--a1), var(--a2), var(--a1)); background-size: 250% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: shine 5s linear infinite; }
+        @keyframes shine { to { background-position: 250% center; } }
+
+        /* ===== PRELOADER (always dark terminal) ===== */
+        #pre { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; animation: pf .01s linear 12s forwards; }
+        @keyframes pf { to { opacity: 0; visibility: hidden; pointer-events: none; } }
+        .panel { position: absolute; top: 0; bottom: 0; width: 50.2%; background: rgba(2,8,5,.96); transition: transform 1s cubic-bezier(.77,0,.18,1); }
+        .panel.l { left: 0; } .panel.r { right: 0; }
+        .panel::after { content: ''; position: absolute; top: 0; bottom: 0; width: 2px; background: #00ff9c; box-shadow: 0 0 22px #00ff9c; }
+        .panel.l::after { right: 0; } .panel.r::after { left: 0; }
+        #pre.open .panel.l { transform: translateX(-101%); }
+        #pre.open .panel.r { transform: translateX(101%); }
+        #preContent { position: relative; z-index: 2; width: min(92%, 560px); transition: opacity .35s ease, transform .6s ease; }
+        #pre.granted #preContent, #pre.open #preContent { opacity: 0; transform: scale(.96); }
+        .term { background: rgba(0,12,7,.92); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); }
+        #pre .term { border-color: rgba(0,255,156,.4); box-shadow: 0 0 50px -10px rgba(0,255,156,.5); }
+        .term-bar { display: flex; align-items: center; gap: 7px; padding: 10px 14px; border-bottom: 1px solid var(--border); background: rgba(0,255,156,.06); font-size: 12px; color: var(--muted); }
+        .term-bar i { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+        .term-bar span { margin-left: 8px; }
+        #termBody { padding: 16px 18px; min-height: 210px; font-size: 13px; line-height: 1.9; color: #00ff9c; }
+        #termBody .ok { color: #00e5ff; font-weight: 700; }
+        #termBody b { color: #fff; }
+        .pre-bar { height: 5px; border-radius: 99px; background: rgba(0,255,156,.15); overflow: hidden; margin: 20px 0 10px; }
+        #barFill { height: 100%; width: 0; background: linear-gradient(90deg, #00ff9c, #00e5ff); box-shadow: 0 0 14px #00ff9c; }
+        .pre-row { display: flex; justify-content: space-between; font-size: 12px; color: #00ff9c; letter-spacing: 2px; }
+        #granted { position: absolute; z-index: 3; opacity: 0; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: clamp(26px, 7vw, 56px); color: #00ff9c; letter-spacing: 6px; text-shadow: 0 0 30px #00ff9c; transition: opacity .3s; text-align: center; }
+        #pre.granted #granted { opacity: 1; animation: pop .5s ease-out; }
+        #pre.open #granted { opacity: 0; }
+        @keyframes pop { from { transform: scale(.6); } to { transform: scale(1); } }
+
+        /* ===== BACKGROUND ===== */
+        #matrix { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: var(--rain); transition: opacity .6s; }
+        .grid-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 64px 64px; opacity: .22; mask-image: radial-gradient(ellipse at center, #000 10%, transparent 75%); -webkit-mask-image: radial-gradient(ellipse at center, #000 10%, transparent 75%); }
+        .scanlines { position: fixed; inset: 0; z-index: 90; pointer-events: none; opacity: var(--scan); background: repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0, rgba(0,0,0,0) 2px, rgba(0,0,0,.28) 3px); transition: opacity .6s; }
+        .vignette { position: fixed; inset: 0; z-index: 89; pointer-events: none; background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.45) 100%); opacity: var(--scan); transition: opacity .6s; }
+        #glow { position: fixed; width: 380px; height: 380px; border-radius: 50%; pointer-events: none; z-index: 1; background: radial-gradient(circle, var(--a1) 0%, transparent 65%); opacity: .1; transform: translate(-50%, -50%); }
+        #progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 60; background: linear-gradient(90deg, var(--a1), var(--a2)); box-shadow: 0 0 12px var(--a1); }
+        main, nav, footer { position: relative; z-index: 2; }
+
+        /* ===== NAV ===== */
+        nav.top { position: fixed; top: 14px; left: 20px; width: calc(100% - 200px); max-width: 880px; z-index: 50; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: var(--shadow); }
+        nav a.link { color: var(--muted); font-size: 13px; transition: color .25s, text-shadow .25s; }
+        nav a.link:hover { color: var(--a1); text-shadow: 0 0 10px var(--a1); }
+        .nav-cv { font-size: 12px; font-weight: 700; padding: 7px 14px; border: 1px solid var(--a1); color: var(--a1); border-radius: 6px; transition: .25s; }
+        .nav-cv:hover { background: var(--a1); color: var(--bg); box-shadow: 0 0 18px var(--a1); }
+
+        /* ===== LAMP (pull cord) ===== */
+        #lamp { position: fixed; top: 0; right: 28px; width: 130px; height: 300px; z-index: 70; pointer-events: none; touch-action: none; user-select: none; }
+        #lamp svg { overflow: visible; pointer-events: none; touch-action: none; }
+        #grab { pointer-events: all; cursor: grab; }
+        #lamp.dragging #grab { cursor: grabbing; }
+        #swing { transform-box: view-box; transform-origin: 65px 0; animation: swing 7s ease-in-out infinite; }
+        @keyframes swing { 0%,100% { transform: rotate(-1.6deg); } 50% { transform: rotate(1.6deg); } }
+        #swing.kick { animation: kick 1.4s ease-out; }
+        @keyframes kick { 0% { transform: rotate(7deg); } 25% { transform: rotate(-5deg); } 50% { transform: rotate(3deg); } 75% { transform: rotate(-1.5deg); } 100% { transform: rotate(0); } }
+        #bulb { fill: var(--bulb); transition: fill .4s; }
+        [data-theme="light"] #bulb { filter: drop-shadow(0 0 8px #ffd54a) drop-shadow(0 0 22px #ffd54a); }
+        .shade { fill: var(--shade); stroke: var(--a1); stroke-width: 1.5; transition: fill .4s; }
+        #cone { position: absolute; top: 112px; left: 65px; transform: translateX(-50%); width: 360px; height: 560px; clip-path: polygon(40% 0, 60% 0, 100% 100%, 0 100%); background: linear-gradient(to bottom, rgba(255,214,102,.5), rgba(255,214,102,0)); opacity: var(--cone); transition: opacity .6s ease; pointer-events: none; }
+        #lampHint { position: absolute; top: 232px; left: 0; width: 130px; text-align: center; font-size: 10px; letter-spacing: 2px; color: var(--a1); animation: bob 1.6s ease-in-out infinite; transition: opacity .4s; }
+        #lampHint.gone { opacity: 0; }
+        @keyframes bob { 50% { transform: translateY(6px); } }
+
+        /* ===== CARDS / BUTTONS ===== */
+        .card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: transform .25s ease, box-shadow .3s, border-color .3s; will-change: transform; }
+        .card::before, .card::after { content: ''; position: absolute; width: 16px; height: 16px; border: 2px solid var(--a1); transition: all .35s ease; pointer-events: none; }
+        .card::before { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
+        .card::after { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
+        .card:hover { box-shadow: var(--shadow); border-color: var(--a1); }
+        .card:hover::before, .card:hover::after { width: calc(100% + 4px); height: calc(100% + 4px); opacity: .55; }
+        .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 26px; border-radius: 6px; font-weight: 700; font-size: 14px; transition: transform .25s, box-shadow .3s, background .3s; cursor: pointer; letter-spacing: .5px; }
+        .btn:hover { transform: translateY(-4px); }
+        .btn-primary { color: var(--bg); background: var(--a1); box-shadow: 0 0 24px -4px var(--a1); }
+        .btn-primary:hover { box-shadow: 0 0 40px 0 var(--a1); }
+        .btn-ghost { border: 1px solid var(--a1); color: var(--a1); background: transparent; }
+        .btn-ghost:hover { background: var(--a1); color: var(--bg); }
+        .tag { padding: 7px 14px; border-radius: 4px; font-size: 12px; background: var(--surface); border: 1px solid var(--border); color: var(--a1); transition: .25s; }
+        .tag:hover { background: var(--a1); color: var(--bg); box-shadow: 0 0 14px var(--a1); }
+        .icon-box { width: 52px; height: 52px; border-radius: 6px; display: grid; place-items: center; font-size: 22px; color: var(--a1); border: 1px solid var(--a1); margin-bottom: 18px; box-shadow: inset 0 0 18px -6px var(--a1); }
+        .pr { color: var(--a1); font-weight: 700; margin-right: 8px; }
+
+        /* ===== HERO HUD IMAGE ===== */
+        .hud { position: relative; width: min(100%, 460px); aspect-ratio: 4 / 5; }
+        .hud-frame { position: absolute; inset: 0; border: 1px solid var(--border); background: #030d08; box-shadow: var(--shadow); overflow: hidden; }
+        .hud-frame img, .hud-frame svg.art { position: absolute; inset: 0; width: 100%; height: 100%; }
+        .hud-frame img { object-fit: cover; z-index: 2; }
+        .hud .c { position: absolute; width: 38px; height: 38px; border: 3px solid var(--a1); z-index: 5; filter: drop-shadow(0 0 8px var(--a1)); }
+        .hud .tl { top: -8px; left: -8px; border-right: 0; border-bottom: 0; }
+        .hud .tr { top: -8px; right: -8px; border-left: 0; border-bottom: 0; }
+        .hud .bl { bottom: -8px; left: -8px; border-right: 0; border-top: 0; }
+        .hud .br { bottom: -8px; right: -8px; border-left: 0; border-top: 0; }
+        .scan { position: absolute; left: 0; right: 0; height: 90px; z-index: 4; pointer-events: none; background: linear-gradient(to bottom, transparent, rgba(0,255,156,.28), transparent); animation: scanmove 4.2s linear infinite; }
+        @keyframes scanmove { from { top: -90px; } to { top: 100%; } }
+        .hud-tag { position: absolute; z-index: 6; left: 14px; right: 14px; font-size: 11px; letter-spacing: 2px; color: #00ff9c; background: rgba(0,10,6,.78); border: 1px solid rgba(0,255,156,.4); padding: 7px 10px; backdrop-filter: blur(6px); }
+        .hud-tag.top { top: 14px; } .hud-tag.bot { bottom: 14px; display: flex; align-items: center; gap: 8px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: #00ff9c; box-shadow: 0 0 10px #00ff9c; animation: blink 1.2s infinite; }
+        .hud:hover .hud-frame { animation: jitter .35s steps(2) 2; }
+        @keyframes jitter { 0% { transform: translate(0); } 50% { transform: translate(-3px, 2px); } 100% { transform: translate(3px, -2px); } }
+
+        /* ===== GLITCH NAME ===== */
+        .glitch { position: relative; display: inline-block; }
+        .glitch::before, .glitch::after { content: attr(data-text); position: absolute; left: 0; top: 0; width: 100%; -webkit-text-fill-color: initial; background: none; opacity: 0; }
+        .glitch::before { color: var(--a2); clip-path: inset(0 0 55% 0); animation: g1 4s infinite; }
+        .glitch::after { color: var(--a3); clip-path: inset(55% 0 0 0); animation: g2 4s infinite; }
+        @keyframes g1 { 0%,90%,100% { opacity: 0; transform: none; } 92% { opacity: 1; transform: translate(-4px, 1px); } 96% { opacity: 1; transform: translate(4px, -1px); } }
+        @keyframes g2 { 0%,91%,100% { opacity: 0; transform: none; } 93% { opacity: 1; transform: translate(4px, 1px); } 97% { opacity: 1; transform: translate(-4px, -1px); } }
+
+        /* ===== MISC ===== */
+        .cursor::after { content: '█'; margin-left: 3px; color: var(--a1); animation: blink 1s steps(2) infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+        .reveal.visible { opacity: 1; transform: none; }
+        .marquee { overflow: hidden; border-block: 1px solid var(--border); background: var(--surface); padding: 14px 0; }
+        .track { display: flex; gap: 48px; width: max-content; animation: slide 30s linear infinite; }
+        .track span { font-size: 13px; color: var(--a1); white-space: nowrap; letter-spacing: 2px; }
+        .track span i { color: var(--a3); margin-right: 10px; }
+        @keyframes slide { to { transform: translateX(-50%); } }
+        .section-title { font-family: 'Orbitron', sans-serif; font-size: clamp(24px, 3.6vw, 36px); font-weight: 700; margin: 0 0 34px; letter-spacing: 1px; }
+        .section-title small { display: block; color: var(--a1); font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 400; letter-spacing: 0; margin-bottom: 6px; }
+        .link-arrow i { transition: transform .25s; } .link-arrow:hover i { transform: translateX(6px); }
+        ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-thumb { background: var(--a1); border-radius: 8px; }
+        @media (max-width: 767px) { nav .links { display: none; } nav.top { width: calc(100% - 150px); left: 12px; } #lamp { right: 6px; transform: scale(.82); transform-origin: top right; } .hud { width: min(86%, 380px); } }
+        @media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+    </style>
+</head>
+<body>
+
+    <!-- ===== PRELOADER: terminal boot ===== -->
+    <div id="pre">
+        <div class="panel l"></div><div class="panel r"></div>
+        <div id="granted">ACCESS<br>GRANTED</div>
+        <div id="preContent">
+            <div class="term">
+                <div class="term-bar"><i style="background:#ff5f56"></i><i style="background:#ffbd2e"></i><i style="background:#27c93f"></i><span>ali@portfolio: ~/build</span></div>
+                <div id="termBody"></div>
             </div>
-            <h3 class="text-xl font-bold text-white mb-2">CV Download Started!</h3>
-            <p class="text-gray-300 text-sm mb-6">
-                Aliyan (Ali)'s updated cybersecurity & developer CV is downloading automatically.
-            </p>
-            <button onclick="closeModal()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 px-4 rounded-xl transition shadow-lg shadow-red-900/40">
-                Continue to Portfolio
-            </button>
+            <div class="pre-bar"><div id="barFill"></div></div>
+            <div class="pre-row"><span id="preStatus" class="cursor">BUILDING PORTFOLIO</span><span id="prePct">0%</span></div>
         </div>
     </div>
 
-    <!-- Hidden Download Anchor -->
-    <a id="autoCvLink" href="Ali_CV.pdf" download="Ali_CV.pdf" class="hidden"></a>
+    <div id="progress"></div>
+    <canvas id="matrix"></canvas>
+    <div class="grid-bg"></div>
+    <div class="scanlines"></div><div class="vignette"></div>
+    <div id="glow"></div>
 
-    <!-- Navigation Bar -->
-    <nav class="p-5 bg-black/90 backdrop-blur fixed w-full top-0 z-40 border-b border-gray-800">
-        <div class="container mx-auto max-w-5xl flex justify-between items-center">
-            <a href="#about" class="text-xl font-mono font-bold text-red-500">&lt;Ali /&gt;</a>
-            <div class="space-x-4 md:space-x-6 text-sm font-semibold">
-                <a href="#index" class="hover:text-red-500 transition">Index</a>
-                <a href="#summary" class="hover:text-red-500 transition">Summary</a>
-                <a href="#skills" class="hover:text-red-500 transition">Skills</a>
-                <a href="#projects" class="hover:text-red-500 transition">Projects</a>
-                <a href="#contact" class="hover:text-red-500 transition">Contact</a>
+    <!-- ===== LAMP: pull the cord to switch theme ===== -->
+    <div id="lamp" role="button" tabindex="0" aria-label="Pull the lamp cord to switch dark and light theme" title="Cord kheencho: Dark / Light">
+        <div id="cone"></div>
+        <svg width="130" height="300" viewBox="0 0 130 300">
+            <g id="swing">
+                <line x1="65" y1="0" x2="65" y2="46" stroke="var(--wire)" stroke-width="2"/>
+                <rect x="58" y="42" width="14" height="12" rx="2" fill="var(--wire)"/>
+                <path class="shade" d="M30 114 L50 54 H80 L100 114 Z"/>
+                <ellipse cx="65" cy="114" rx="35" ry="7" fill="var(--shade)" stroke="var(--a1)" stroke-width="1.5"/>
+                <circle id="bulb" cx="65" cy="116" r="9"/>
+                <line id="cordLine" x1="92" y1="113" x2="92" y2="180" stroke="var(--a1)" stroke-width="2"/>
+                <g id="grab">
+                    <rect x="76" y="110" width="34" height="140" fill="transparent"/>
+                    <circle id="bead" cx="92" cy="187" r="7" fill="var(--a1)" stroke="var(--bg)" stroke-width="2"/>
+                </g>
+            </g>
+        </svg>
+        <div id="lampHint">PULL ME ↓</div>
+    </div>
+
+    <!-- ===== NAV ===== -->
+    <nav class="top">
+        <a href="#about" class="head font-bold text-lg grad">&lt;ALI/&gt;</a>
+        <div class="flex items-center gap-6">
+            <div class="links flex gap-6">
+                <a class="link" href="#summary">./summary</a>
+                <a class="link" href="#skills">./skills</a>
+                <a class="link" href="#projects">./repos</a>
+                <a class="link" href="#contact">./contact</a>
             </div>
+            <a href="Ali_CV.pdf" download="Ali_CV.pdf" class="nav-cv"><i class="fas fa-download mr-1"></i>CV</a>
         </div>
     </nav>
 
-    <!-- Hero / About Section -->
-    <section id="about" class="pt-32 pb-16 px-6 max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between">
-        <div class="md:w-3/4 space-y-4">
-            <span class="text-red-500 font-mono text-sm">Hi, my name is</span>
-            <h1 class="text-4xl md:text-5xl font-extrabold text-white">Aliyan (Ali)</h1>
-            <h2 class="text-2xl text-gray-400 font-semibold">Security Researcher & Linux Scripting Specialist</h2>
-            <p class="text-gray-300 leading-relaxed">
-                Karachi-based security researcher focused on Web Application Vulnerabilities, Linux CLI (WSL 2 / Ubuntu), Bash Shell Scripting (`nano`), and Python File I/O automation tools.
-            </p>
-            <div class="pt-4 flex flex-wrap gap-4">
-                <a href="https://github.com/alisecurity8080" target="_blank" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-lg font-bold transition flex items-center gap-2 shadow-lg shadow-red-900/40">
-                    <i class="fab fa-github"></i> GitHub Profile
-                </a>
-                <a href="Ali_CV.pdf" download="Ali_CV.pdf" class="border border-red-500 text-red-500 hover:bg-red-600 hover:text-white px-5 py-2.5 rounded-lg font-bold transition flex items-center gap-2">
-                    <i class="fas fa-download"></i> Download CV Again
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Quick Index Section -->
-    <section id="index" class="py-12 bg-gray-950 border-t border-b border-gray-800">
-        <div class="max-w-5xl mx-auto px-6">
-            <h2 class="text-2xl font-bold text-red-500 mb-6 font-mono">&lt; Quick_Index /&gt;</h2>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <a href="#summary" class="p-4 bg-gray-900 rounded-lg border border-gray-800 hover:border-red-500 transition flex items-center gap-3">
-                    <i class="fas fa-user-circle text-red-500"></i> <span>01. Summary</span>
-                </a>
-                <a href="#skills" class="p-4 bg-gray-900 rounded-lg border border-gray-800 hover:border-red-500 transition flex items-center gap-3">
-                    <i class="fas fa-terminal text-red-500"></i> <span>02. Skills & Bash</span>
-                </a>
-                <a href="#projects" class="p-4 bg-gray-900 rounded-lg border border-gray-800 hover:border-red-500 transition flex items-center gap-3">
-                    <i class="fas fa-code text-red-500"></i> <span>03. Repositories</span>
-                </a>
-                <a href="https://github.com/alisecurity8080" target="_blank" class="p-4 bg-gray-900 rounded-lg border border-gray-800 hover:border-red-500 transition flex items-center gap-3">
-                    <i class="fab fa-github text-red-500"></i> <span>04. GitHub Profile</span>
-                </a>
-                <a href="mailto:alisecurity8080@gmail.com" class="p-4 bg-gray-900 rounded-lg border border-gray-800 hover:border-red-500 transition flex items-center gap-3">
-                    <i class="fas fa-envelope text-red-500"></i> <span>05. Gmail Contact</span>
-                </a>
-                <a href="tel:03222264829" class="p-4 bg-gray-900 rounded-lg border border-gray-800 hover:border-red-500 transition flex items-center gap-3">
-                    <i class="fas fa-phone text-red-500"></i> <span>06. Call Mobile</span>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Detailed Summary Section -->
-    <section id="summary" class="py-16 max-w-5xl mx-auto px-6">
-        <h2 class="text-3xl font-bold text-white mb-6">Professional Summary</h2>
-        <div class="bg-gray-900 p-8 rounded-xl border border-gray-800 space-y-4 text-gray-300">
-            <p>
-                Specialized in Web Application Vulnerability Analysis, Business Logic Flaws (IDOR, CSRF), and Linux CLI environments.
-            </p>
-            <p>
-                <strong class="text-white">Linux CLI & Bash Scripting:</strong> Highly comfortable writing custom shell scripts (`.sh`) in the Linux terminal using the `nano` editor. Experienced in developing interactive menus (`if-elif-else`), ping scanners, system health loggers, and command-line reconnaissance tools.
-            </p>
-            <p>
-                <strong class="text-white">Python Skills:</strong> Strong foundation in core Python concepts including File I/O, Exception Handling/Logging, Conditionals, Loops, and automation tools.
-            </p>
-        </div>
-    </section>
-
-    <!-- Core Skills & Linux Terminal Section -->
-    <section id="skills" class="py-16 bg-gray-950 border-t border-b border-gray-800">
-        <div class="max-w-5xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center text-white mb-10">Skills & Technical Capabilities</h2>
-            
-            <div class="grid md:grid-cols-3 gap-6">
-                <!-- Skill 1 -->
-                <div class="bg-gray-900 p-6 rounded-xl border border-gray-800 hover:border-red-500 transition">
-                    <i class="fas fa-terminal text-3xl text-red-500 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">Bash Scripting (`nano`)</h3>
-                    <p class="text-gray-400 text-sm">Building interactive Linux scripts, conditionals (`if/elif/else`), system monitoring, ping scanners, and log generation.</p>
-                </div>
-                <!-- Skill 2 -->
-                <div class="bg-gray-900 p-6 rounded-xl border border-gray-800 hover:border-red-500 transition">
-                    <i class="fab fa-python text-3xl text-red-500 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">Python & File I/O</h3>
-                    <p class="text-gray-400 text-sm">Core Python scripts focusing on File Handling, Exception Logging, Conditionals, and basic CLI tools.</p>
-                </div>
-                <!-- Skill 3 -->
-                <div class="bg-gray-900 p-6 rounded-xl border border-gray-800 hover:border-red-500 transition">
-                    <i class="fas fa-bug text-3xl text-red-500 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">Web Security & PoC</h3>
-                    <p class="text-gray-400 text-sm">Testing IDOR, CSRF, and Business Logic flaws using Burp Suite (Repeater, Intruder) and custom PoCs.</p>
-                </div>
-            </div>
-
-            <!-- Detailed Tool Stack -->
-            <div class="mt-10 bg-gray-900 p-6 rounded-xl border border-gray-800">
-                <h3 class="text-lg font-bold text-red-500 mb-3">Complete Tool Stack & OS Setup</h3>
-                <p class="text-gray-300 text-sm leading-relaxed">
-                    Linux CLI (Ubuntu on WSL 2), `nano` editor, Bash Shell Scripting, Python 3, Burp Suite, Git & GitHub, TCP/IP Network Analysis.
+    <main>
+        <!-- ===== HERO ===== -->
+        <section id="about" class="px-6 max-w-6xl mx-auto pt-40 pb-24 flex flex-col-reverse md:flex-row items-center justify-between gap-14">
+            <div class="md:w-1/2 space-y-6 reveal">
+                <p class="text-sm" style="color:var(--a1)"><span class="pr">root@ali:~$</span>whoami</p>
+                <h1 class="head font-black leading-tight" style="font-size:clamp(38px,6.4vw,70px);">
+                    <span class="grad glitch" data-text="ALIYAN">ALIYAN</span><br><span style="color:var(--text);font-size:.55em;font-weight:500;">( Ali )</span>
+                </h1>
+                <h2 style="font-size:clamp(15px,2.2vw,21px);min-height:32px;color:var(--muted);">
+                    &gt; <span id="typed" style="color:var(--a1);"></span><span class="cursor"></span>
+                </h2>
+                <p class="muted" style="line-height:1.85;max-width:540px;font-size:14px;">
+                    Karachi-based security researcher focused on Web Application Vulnerabilities, Linux CLI (WSL 2 / Ubuntu), Bash scripting, and Python File I/O automation tools.
                 </p>
+                <div class="flex flex-wrap gap-4 pt-2">
+                    <a href="Ali_CV.pdf" download="Ali_CV.pdf" class="btn btn-primary"><i class="fas fa-download"></i> DOWNLOAD CV</a>
+                    <a href="https://github.com/alisecurity8080" target="_blank" class="btn btn-ghost"><i class="fab fa-github"></i> GITHUB</a>
+                </div>
+            </div>
+
+            <!-- BIG HUD IMAGE FRAME -->
+            <div class="md:w-1/2 flex justify-center reveal">
+                <div class="hud">
+                    <span class="c tl"></span><span class="c tr"></span><span class="c bl"></span><span class="c br"></span>
+                    <div class="hud-frame">
+                        <!-- Apni image: profile.jpg naam se isi folder me rakhein, poore frame me aa jayegi -->
+                        <img src="profile.jpg" alt="Aliyan (Ali)" onerror="this.style.display='none'">
+                        <svg class="art" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <radialGradient id="halo" cx="50%" cy="38%" r="55%"><stop offset="0" stop-color="#00ff9c" stop-opacity=".38"/><stop offset="1" stop-color="#00ff9c" stop-opacity="0"/></radialGradient>
+                                <linearGradient id="cloth" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d2a1e"/><stop offset="1" stop-color="#04100b"/></linearGradient>
+                            </defs>
+                            <rect width="400" height="500" fill="#030d08"/>
+                            <g font-family="monospace" font-size="11" fill="#00ff9c" opacity=".25">
+                                <text x="14" y="40">0x41 0x4C 0x49</text><text x="300" y="70">nmap -sV</text><text x="20" y="130">sudo su</text>
+                                <text x="310" y="170">GET /admin</text><text x="16" y="260">idor=1337</text><text x="290" y="300">csrf_token</text>
+                                <text x="22" y="350">101100101</text><text x="300" y="380">ssh root@</text>
+                            </g>
+                            <rect width="400" height="500" fill="url(#halo)"/>
+                            <path d="M10 500 Q30 350 200 332 Q370 350 390 500Z" fill="url(#cloth)" stroke="#00ff9c" stroke-opacity=".5" stroke-width="1.5"/>
+                            <path d="M96 340 Q80 110 200 70 Q320 110 304 340 Q250 372 200 372 Q150 372 96 340Z" fill="#06150e" stroke="#00ff9c" stroke-width="2.2"/>
+                            <path d="M120 300 Q112 140 200 100" fill="none" stroke="#00ff9c" stroke-opacity=".35" stroke-width="2"/>
+                            <ellipse cx="200" cy="218" rx="82" ry="102" fill="#010503" stroke="#00ff9c" stroke-opacity=".35"/>
+                            <rect x="146" y="200" width="38" height="9" rx="4.5" fill="#00e5ff"><animate attributeName="opacity" values="1;.35;1" dur="3s" repeatCount="indefinite"/></rect>
+                            <rect x="216" y="200" width="38" height="9" rx="4.5" fill="#00e5ff"><animate attributeName="opacity" values="1;.35;1" dur="3s" repeatCount="indefinite"/></rect>
+                            <path d="M162 270 Q200 292 238 270" fill="none" stroke="#00ff9c" stroke-width="2.5" stroke-linecap="round"/>
+                            <path d="M70 500 L90 410 H310 L330 500Z" fill="#071a12" stroke="#00ff9c" stroke-width="2"/>
+                            <rect x="104" y="420" width="192" height="64" fill="#02100a"/>
+                            <g stroke="#00ff9c" stroke-width="3" stroke-linecap="round" opacity=".85">
+                                <line x1="116" y1="436" x2="190" y2="436"/><line x1="126" y1="450" x2="236" y2="450"/><line x1="116" y1="464" x2="164" y2="464"/><line x1="176" y1="464" x2="260" y2="464"/>
+                            </g>
+                        </svg>
+                        <div class="scan"></div>
+                        <div class="hud-tag top">TARGET://ALIYAN</div>
+                        <div class="hud-tag bot"><span class="dot"></span> STATUS: ONLINE · KARACHI, PK</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== MARQUEE ===== -->
+        <div class="marquee">
+            <div class="track">
+                <span><i class="fas fa-skull"></i>WEB SECURITY</span><span><i class="fas fa-skull"></i>BASH SCRIPTING</span><span><i class="fas fa-skull"></i>PYTHON AUTOMATION</span><span><i class="fas fa-skull"></i>IDOR // CSRF</span><span><i class="fas fa-skull"></i>LINUX CLI</span><span><i class="fas fa-skull"></i>BURP SUITE</span><span><i class="fas fa-skull"></i>TCP/IP</span>
+                <span><i class="fas fa-skull"></i>WEB SECURITY</span><span><i class="fas fa-skull"></i>BASH SCRIPTING</span><span><i class="fas fa-skull"></i>PYTHON AUTOMATION</span><span><i class="fas fa-skull"></i>IDOR // CSRF</span><span><i class="fas fa-skull"></i>LINUX CLI</span><span><i class="fas fa-skull"></i>BURP SUITE</span><span><i class="fas fa-skull"></i>TCP/IP</span>
             </div>
         </div>
-    </section>
 
-    <!-- Specific Projects Section -->
-    <section id="projects" class="py-16 max-w-5xl mx-auto px-6">
-        <h2 class="text-3xl font-bold text-center text-white mb-2">Featured Repositories</h2>
-        <p class="text-center text-gray-400 mb-10 text-sm">Direct links to my open-source projects on GitHub</p>
-
-        <div class="grid md:grid-cols-2 gap-6">
-            <!-- Project 1 -->
-            <div class="bg-gray-900 p-6 rounded-xl border border-gray-800 flex flex-col justify-between hover:border-red-500 transition">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="text-xl font-bold text-white">Recon Tool</h3>
-                        <i class="fas fa-search text-red-500"></i>
-                    </div>
-                    <p class="text-gray-400 text-sm mb-4">Bash-based interactive reconnaissance script with system diagnostics, target ping scanner, and log output.</p>
-                </div>
-                <a href="https://github.com/alisecurity8080/recon_tool" target="_blank" class="inline-flex items-center text-red-500 font-bold hover:underline text-sm gap-2">
-                    View on GitHub <i class="fas fa-external-link-alt text-xs"></i>
-                </a>
-            </div>
-
-            <!-- Project 2 -->
-            <div class="bg-gray-900 p-6 rounded-xl border border-gray-800 flex flex-col justify-between hover:border-red-500 transition">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="text-xl font-bold text-white">Python File Operations Toolkit</h3>
-                        <i class="fas fa-folder-open text-red-500"></i>
-                    </div>
-                    <p class="text-gray-400 text-sm mb-4">Utility for handling file I/O operations, file reading/writing, and error handling in Python.</p>
-                </div>
-                <a href="https://github.com/alisecurity8080/Python-File-Operations-Toolkit" target="_blank" class="inline-flex items-center text-red-500 font-bold hover:underline text-sm gap-2">
-                    View on GitHub <i class="fas fa-external-link-alt text-xs"></i>
-                </a>
-            </div>
-
-            <!-- Project 3 -->
-            <div class="bg-gray-900 p-6 rounded-xl border border-gray-800 flex flex-col justify-between hover:border-red-500 transition">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="text-xl font-bold text-white">TTP Header Inspector</h3>
-                        <i class="fas fa-shield-alt text-red-500"></i>
-                    </div>
-                    <p class="text-gray-400 text-sm mb-4">HTTP header analysis tool for evaluating security headers, token validations, and potential misconfigurations.</p>
-                </div>
-                <a href="https://github.com/alisecurity8080/TTP-Header-Inspector" target="_blank" class="inline-flex items-center text-red-500 font-bold hover:underline text-sm gap-2">
-                    View on GitHub <i class="fas fa-external-link-alt text-xs"></i>
-                </a>
-            </div>
-
-            <!-- Project 4 -->
-            <div class="bg-gray-900 p-6 rounded-xl border border-gray-800 flex flex-col justify-between hover:border-red-500 transition">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="text-xl font-bold text-white">Python Port Scanner</h3>
-                        <i class="fas fa-network-wired text-red-500"></i>
-                    </div>
-                    <p class="text-gray-400 text-sm mb-4">Socket-based port scanner tool written in Python for identifying open network ports.</p>
-                </div>
-                <a href="https://github.com/alisecurity8080/Python-Port-Scanner" target="_blank" class="inline-flex items-center text-red-500 font-bold hover:underline text-sm gap-2">
-                    View on GitHub <i class="fas fa-external-link-alt text-xs"></i>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Direct Clickable Contact Section -->
-    <section id="contact" class="py-16 bg-gray-950 border-t border-gray-800 text-center">
-        <div class="max-w-xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-white mb-4">Get In Touch</h2>
-            <p class="text-gray-400 mb-8">Open for Junior Cybersecurity Internships, Security Trainee roles, or Python/Bash projects.</p>
-            
-            <div class="space-y-4 text-left max-w-md mx-auto mb-8">
-                <!-- Clickable Email -->
-                <a href="mailto:alisecurity8080@gmail.com" class="flex items-center p-3 bg-gray-900 rounded-lg border border-gray-800 hover:border-red-500 transition text-gray-200">
-                    <i class="fas fa-envelope text-red-500 text-xl mr-4"></i>
-                    <div>
-                        <p class="text-xs text-gray-400">Click to Email</p>
-                        <p class="font-mono text-sm">alisecurity8080@gmail.com</p>
-                    </div>
-                </a>
-
-                <!-- Clickable Phone -->
-                <a href="tel:03222264829" class="flex items-center p-3 bg-gray-900 rounded-lg border border-gray-800 hover:border-red-500 transition text-gray-200">
-                    <i class="fas fa-phone text-red-500 text-xl mr-4"></i>
-                    <div>
-                        <p class="text-xs text-gray-400">Click to Call</p>
-                        <p class="font-mono text-sm">03222264829</p>
-                    </div>
-                </a>
-
-                <!-- Clickable GitHub Profile -->
-                <a href="https://github.com/alisecurity8080" target="_blank" class="flex items-center p-3 bg-gray-900 rounded-lg border border-gray-800 hover:border-red-500 transition text-gray-200">
-                    <i class="fab fa-github text-red-500 text-xl mr-4"></i>
-                    <div>
-                        <p class="text-xs text-gray-400">Click to Open GitHub</p>
-                        <p class="font-mono text-sm">github.com/alisecurity8080</p>
-                    </div>
-                </a>
-
-                <!-- Address -->
-                <div class="flex items-center p-3 bg-gray-900 rounded-lg border border-gray-800 text-gray-200">
-                    <i class="fas fa-map-marker-alt text-red-500 text-xl mr-4"></i>
-                    <div>
-                        <p class="text-xs text-gray-400">Location Address</p>
-                        <p class="text-sm">Nazimabad No. 2, Karachi, Pakistan</p>
-                    </div>
+        <!-- ===== SUMMARY (terminal) ===== -->
+        <section id="summary" class="max-w-5xl mx-auto px-6 py-24">
+            <h2 class="section-title reveal"><small>root@ali:~# cat summary</small>PROFESSIONAL SUMMARY</h2>
+            <div class="term reveal">
+                <div class="term-bar"><i style="background:#ff5f56"></i><i style="background:#ffbd2e"></i><i style="background:#27c93f"></i><span>ali@kali:~/about.md</span></div>
+                <div style="padding:22px 24px;font-size:13.5px;line-height:1.9;">
+                    <p style="color:var(--text)"><span class="pr">$</span>cat expertise.txt</p>
+                    <p class="muted" style="margin-bottom:14px">Specialized in Web Application Vulnerability Analysis, Business Logic Flaws (IDOR, CSRF), and Linux CLI environments.</p>
+                    <p style="color:var(--text)"><span class="pr">$</span>cat linux_bash.txt</p>
+                    <p class="muted" style="margin-bottom:14px">Comfortable writing custom shell scripts (<span style="color:var(--a1)">.sh</span>) in the Linux terminal using <span style="color:var(--a1)">nano</span>. Experienced in interactive menus (<span style="color:var(--a1)">if-elif-else</span>), ping scanners, system health loggers, and command-line reconnaissance tools.</p>
+                    <p style="color:var(--text)"><span class="pr">$</span>cat python.txt</p>
+                    <p class="muted">Strong foundation in File I/O, Exception Handling/Logging, Conditionals, Loops, and automation tools.</p>
                 </div>
             </div>
+            <div class="grid grid-cols-3 gap-4 mt-6 text-center">
+                <div class="card reveal p-6"><p class="head grad font-black" style="font-size:38px"><span class="counter" data-target="4">0</span></p><p class="muted text-xs mt-1">REPOSITORIES</p></div>
+                <div class="card reveal p-6"><p class="head grad font-black" style="font-size:38px"><span class="counter" data-target="3">0</span></p><p class="muted text-xs mt-1">CORE SKILL AREAS</p></div>
+                <div class="card reveal p-6"><p class="head grad font-black" style="font-size:38px"><span class="counter" data-target="100">0</span>%</p><p class="muted text-xs mt-1">LEARNING DRIVE</p></div>
+            </div>
+        </section>
 
-            <a href="mailto:alisecurity8080@gmail.com" class="bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-3 rounded-lg transition inline-block shadow-lg shadow-red-900/40">
-                Send Email
-            </a>
-        </div>
-    </section>
+        <!-- ===== SKILLS ===== -->
+        <section id="skills" class="max-w-5xl mx-auto px-6 py-24">
+            <h2 class="section-title reveal"><small>root@ali:~# ls skills/</small>SKILLS & CAPABILITIES</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="card tilt reveal p-7"><div class="icon-box"><i class="fas fa-terminal"></i></div><h3 class="head text-lg font-bold mb-2">BASH SCRIPTING</h3><p class="muted text-sm" style="line-height:1.75">Interactive Linux scripts, conditionals, system monitoring, ping scanners, and log generation.</p></div>
+                <div class="card tilt reveal p-7"><div class="icon-box"><i class="fab fa-python"></i></div><h3 class="head text-lg font-bold mb-2">PYTHON & FILE I/O</h3><p class="muted text-sm" style="line-height:1.75">Core Python scripts focusing on file handling, exception logging, and basic CLI tools.</p></div>
+                <div class="card tilt reveal p-7"><div class="icon-box"><i class="fas fa-bug"></i></div><h3 class="head text-lg font-bold mb-2">WEB SECURITY & PoC</h3><p class="muted text-sm" style="line-height:1.75">Testing IDOR, CSRF, and business logic flaws using Burp Suite (Repeater, Intruder) and custom PoCs.</p></div>
+            </div>
+            <div class="card reveal p-7 mt-8">
+                <h3 class="font-bold mb-4 text-sm" style="color:var(--a1)">$ ./toolstack --list</h3>
+                <div class="flex flex-wrap gap-3">
+                    <span class="tag">Ubuntu (WSL 2)</span><span class="tag">nano</span><span class="tag">Bash</span><span class="tag">Python 3</span><span class="tag">Burp Suite</span><span class="tag">Git & GitHub</span><span class="tag">TCP/IP Analysis</span>
+                </div>
+            </div>
+        </section>
 
-    <footer class="py-6 text-center text-gray-500 text-sm bg-black border-t border-gray-900">
-        © 2026 Aliyan (Ali). Built for GitHub Pages.
+        <!-- ===== PROJECTS ===== -->
+        <section id="projects" class="max-w-5xl mx-auto px-6 py-24">
+            <h2 class="section-title reveal" style="margin-bottom:8px"><small>root@ali:~# ls ~/repos</small>FEATURED REPOSITORIES</h2>
+            <p class="muted text-sm mb-10 reveal">Direct links to my open-source projects on GitHub</p>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="card tilt reveal p-7 flex flex-col justify-between"><div><div class="flex justify-between items-center mb-3"><h3 class="head font-bold">RECON TOOL</h3><i class="fas fa-search" style="color:var(--a1)"></i></div><p class="muted text-sm mb-5" style="line-height:1.75">Bash-based interactive reconnaissance script with system diagnostics, target ping scanner, and log output.</p></div><a href="https://github.com/alisecurity8080/recon_tool" target="_blank" class="link-arrow font-bold text-sm" style="color:var(--a1)">$ git clone <span class="muted">recon_tool</span> <i class="fas fa-arrow-right ml-1"></i></a></div>
+                <div class="card tilt reveal p-7 flex flex-col justify-between"><div><div class="flex justify-between items-center mb-3"><h3 class="head font-bold">PY FILE OPS TOOLKIT</h3><i class="fas fa-folder-open" style="color:var(--a1)"></i></div><p class="muted text-sm mb-5" style="line-height:1.75">Utility for file I/O operations, reading/writing, and error handling in Python.</p></div><a href="https://github.com/alisecurity8080/Python-File-Operations-Toolkit" target="_blank" class="link-arrow font-bold text-sm" style="color:var(--a1)">$ git clone <span class="muted">file-ops-toolkit</span> <i class="fas fa-arrow-right ml-1"></i></a></div>
+                <div class="card tilt reveal p-7 flex flex-col justify-between"><div><div class="flex justify-between items-center mb-3"><h3 class="head font-bold">TTP HEADER INSPECTOR</h3><i class="fas fa-shield-alt" style="color:var(--a1)"></i></div><p class="muted text-sm mb-5" style="line-height:1.75">HTTP header analysis tool for evaluating security headers, token validations, and potential misconfigurations.</p></div><a href="https://github.com/alisecurity8080/TTP-Header-Inspector" target="_blank" class="link-arrow font-bold text-sm" style="color:var(--a1)">$ git clone <span class="muted">header-inspector</span> <i class="fas fa-arrow-right ml-1"></i></a></div>
+                <div class="card tilt reveal p-7 flex flex-col justify-between"><div><div class="flex justify-between items-center mb-3"><h3 class="head font-bold">PYTHON PORT SCANNER</h3><i class="fas fa-network-wired" style="color:var(--a1)"></i></div><p class="muted text-sm mb-5" style="line-height:1.75">Socket-based port scanner written in Python for identifying open network ports.</p></div><a href="https://github.com/alisecurity8080/Python-Port-Scanner" target="_blank" class="link-arrow font-bold text-sm" style="color:var(--a1)">$ git clone <span class="muted">port-scanner</span> <i class="fas fa-arrow-right ml-1"></i></a></div>
+            </div>
+        </section>
+
+        <!-- ===== CONTACT ===== -->
+        <section id="contact" class="max-w-xl mx-auto px-6 py-24 text-center">
+            <h2 class="section-title reveal" style="margin-bottom:12px"><small>root@ali:~# ./contact.sh</small>GET IN TOUCH</h2>
+            <p class="muted mb-10 reveal text-sm" style="line-height:1.8">Open for Junior Cybersecurity Internships, Security Trainee roles, or Python/Bash projects.</p>
+            <div class="space-y-4 text-left mb-10">
+                <a href="mailto:alisecurity8080@gmail.com" class="card reveal flex items-center p-4"><i class="fas fa-envelope text-xl mr-4" style="color:var(--a1)"></i><div><p class="text-xs muted">EMAIL</p><p class="text-sm">alisecurity8080@gmail.com</p></div></a>
+                <a href="tel:03222264829" class="card reveal flex items-center p-4"><i class="fas fa-phone text-xl mr-4" style="color:var(--a1)"></i><div><p class="text-xs muted">PHONE</p><p class="text-sm">03222264829</p></div></a>
+                <a href="https://github.com/alisecurity8080" target="_blank" class="card reveal flex items-center p-4"><i class="fab fa-github text-xl mr-4" style="color:var(--a1)"></i><div><p class="text-xs muted">GITHUB</p><p class="text-sm">github.com/alisecurity8080</p></div></a>
+                <div class="card reveal flex items-center p-4"><i class="fas fa-map-marker-alt text-xl mr-4" style="color:var(--a1)"></i><div><p class="text-xs muted">LOCATION</p><p class="text-sm">Nazimabad No. 2, Karachi, Pakistan</p></div></div>
+            </div>
+            <a href="mailto:alisecurity8080@gmail.com" class="btn btn-primary reveal"><i class="fas fa-paper-plane"></i> SEND EMAIL</a>
+        </section>
+    </main>
+
+    <footer class="py-8 text-center text-xs muted" style="border-top:1px solid var(--border)">
+        © 2026 Aliyan (Ali) · root@ali:~$ exit · Built for GitHub Pages
     </footer>
 
-    <!-- JavaScript Script for Auto Download & Pop-up -->
     <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            const link = document.getElementById('autoCvLink');
-            if (link) {
-                setTimeout(() => {
-                    link.click();
-                }, 500);
+    (function () {
+        var root = document.documentElement;
+        document.body.classList.add('locked');
+
+        /* ---------- THEME ---------- */
+        function setTheme(t) {
+            root.setAttribute('data-theme', t);
+            try { localStorage.setItem('theme', t); } catch (e) {}
+        }
+        var saved = 'dark';
+        try { saved = localStorage.getItem('theme') || 'dark'; } catch (e) {}
+        setTheme(saved);
+        function toggleTheme() { setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); }
+
+        /* ---------- PRELOADER: terminal boot ---------- */
+        var pre = document.getElementById('pre'), fill = document.getElementById('barFill'),
+            pct = document.getElementById('prePct'), statusEl = document.getElementById('preStatus'),
+            body = document.getElementById('termBody');
+        var script = [
+            [0,  'root@ali:~$ <b>./build_portfolio.sh</b>'],
+            [8,  '[+] Initializing secure environment ... <span class="ok">OK</span>'],
+            [24, '[+] Loading modules ................... <span class="ok">OK</span>'],
+            [42, '[+] Compiling skills .................. <span class="ok">OK</span>'],
+            [60, '[+] Scanning repositories ............. <span class="ok">OK</span>'],
+            [78, '[+] Building interface ................ <span class="ok">OK</span>'],
+            [92, '[!] Bypassing firewall ................ <span class="ok">DONE</span>']
+        ];
+        var T = 4600, t0 = Date.now(), li = 0, opened = false;
+        var iv = setInterval(function () {
+            var p = Math.min(1, (Date.now() - t0) / T), v = Math.floor(p * 100);
+            fill.style.width = v + '%'; pct.textContent = v + '%';
+            while (li < script.length && v >= script[li][0]) {
+                var d = document.createElement('div'); d.innerHTML = script[li][1]; body.appendChild(d); li++;
             }
+            if (p >= 1) { clearInterval(iv); grant(); }
+        }, 40);
+        function grant() {
+            pre.classList.add('granted');
+            statusEl.textContent = 'ACCESS GRANTED';
+            setTimeout(openSite, 1200);
+        }
+        function openSite() {
+            if (opened) return; opened = true;
+            clearInterval(iv);
+            pre.classList.add('open');
+            document.body.classList.remove('locked');
+            setTimeout(function () { if (pre.parentNode) pre.parentNode.removeChild(pre); }, 1300);
+            setTimeout(function () { startTyping(); startReveal(); }, 450);
+        }
+        setTimeout(function () { if (!opened) openSite(); }, 9000); // failsafe
+
+        /* ---------- LAMP PULL CORD ---------- */
+        var lamp = document.getElementById('lamp'), grab = document.getElementById('grab'),
+            cordLine = document.getElementById('cordLine'), bead = document.getElementById('bead'),
+            swing = document.getElementById('swing'), hint = document.getElementById('lampHint');
+        var dragging = false, startY = 0, d = 0, back = null;
+        function setCord(v) { d = v; cordLine.setAttribute('y2', 180 + v); bead.setAttribute('cy', 187 + v); }
+        function springBack() {
+            clearInterval(back);
+            back = setInterval(function () { d *= 0.78; if (d < 0.4) { d = 0; clearInterval(back); } setCord(d); }, 16);
+        }
+        function pulled() {
+            toggleTheme();
+            hint.classList.add('gone');
+            swing.classList.remove('kick'); void swing.getBoundingClientRect(); swing.classList.add('kick');
+            setTimeout(function () { swing.classList.remove('kick'); }, 1450);
+        }
+        grab.addEventListener('pointerdown', function (e) {
+            dragging = true; startY = e.clientY; clearInterval(back);
+            lamp.classList.add('dragging');
+            try { grab.setPointerCapture(e.pointerId); } catch (x) {}
+            e.preventDefault();
+        });
+        grab.addEventListener('pointermove', function (e) {
+            if (!dragging) return;
+            setCord(Math.max(0, Math.min(70, e.clientY - startY)));
+        });
+        function release() {
+            if (!dragging) return; dragging = false; lamp.classList.remove('dragging');
+            if (d >= 20) { pulled(); }
+            else if (d < 5) { setCord(42); pulled(); }
+            springBack();
+        }
+        grab.addEventListener('pointerup', release);
+        grab.addEventListener('pointercancel', function () { dragging = false; lamp.classList.remove('dragging'); springBack(); });
+        lamp.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setCord(42); pulled(); springBack(); }
         });
 
-        function closeModal() {
-            const modal = document.getElementById('cvModal');
-            modal.classList.add('opacity-0', 'pointer-events-none');
-            setTimeout(() => {
-                modal.remove();
-            }, 300);
+        /* ---------- TYPING ---------- */
+        var roles = ['Security Researcher', 'Linux & Bash Scripter', 'Python Automation Developer', 'Web Vulnerability Hunter'];
+        function startTyping() {
+            var el = document.getElementById('typed'), r = 0, c = 0, del = false;
+            (function tick() {
+                var w = roles[r];
+                el.textContent = w.slice(0, c);
+                if (!del && c < w.length) c++;
+                else if (!del) { del = true; return setTimeout(tick, 1500); }
+                else if (c > 0) c--;
+                else { del = false; r = (r + 1) % roles.length; }
+                setTimeout(tick, del ? 35 : 80);
+            })();
         }
+
+        /* ---------- REVEAL + COUNTERS ---------- */
+        function startReveal() {
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                    if (!e.isIntersecting) return;
+                    e.target.classList.add('visible');
+                    e.target.querySelectorAll('.counter').forEach(runCounter);
+                    io.unobserve(e.target);
+                });
+            }, { threshold: 0.12 });
+            document.querySelectorAll('.reveal').forEach(function (el, i) {
+                el.style.transitionDelay = (i % 3) * 110 + 'ms';
+                io.observe(el);
+            });
+        }
+        function runCounter(el) {
+            if (el.dataset.done) return; el.dataset.done = 1;
+            var target = +el.dataset.target, n = 0, step = Math.max(1, Math.ceil(target / 45));
+            var t = setInterval(function () { n = Math.min(target, n + step); el.textContent = n; if (n >= target) clearInterval(t); }, 35);
+        }
+
+        /* ---------- SCROLL PROGRESS, GLOW, TILT ---------- */
+        var bar = document.getElementById('progress');
+        addEventListener('scroll', function () {
+            var h = document.documentElement.scrollHeight - innerHeight;
+            bar.style.width = (h > 0 ? (scrollY / h) * 100 : 0) + '%';
+        }, { passive: true });
+        var glow = document.getElementById('glow');
+        addEventListener('mousemove', function (e) { glow.style.left = e.clientX + 'px'; glow.style.top = e.clientY + 'px'; });
+        document.querySelectorAll('.tilt').forEach(function (card) {
+            card.addEventListener('mousemove', function (e) {
+                var r = card.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+                card.style.transform = 'perspective(800px) rotateX(' + (-y * 7).toFixed(2) + 'deg) rotateY(' + (x * 7).toFixed(2) + 'deg) translateY(-6px)';
+            });
+            card.addEventListener('mouseleave', function () { card.style.transform = ''; });
+        });
+
+        /* ---------- MATRIX RAIN ---------- */
+        var mc = document.getElementById('matrix'), mx = mc.getContext('2d');
+        var fs = 16, cols = 0, drops = [], chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ{}<>/$#%&ABCDEF'.split('');
+        function mresize() {
+            mc.width = innerWidth; mc.height = innerHeight;
+            cols = Math.floor(mc.width / fs);
+            drops = []; for (var i = 0; i < cols; i++) drops.push(Math.floor(Math.random() * -40));
+        }
+        mresize(); addEventListener('resize', mresize);
+        setInterval(function () {
+            var dark = root.getAttribute('data-theme') === 'dark';
+            mx.fillStyle = dark ? 'rgba(2,8,5,.12)' : 'rgba(232,246,238,.2)';
+            mx.fillRect(0, 0, mc.width, mc.height);
+            mx.font = fs + 'px JetBrains Mono, monospace';
+            for (var i = 0; i < cols; i++) {
+                var ch = chars[Math.floor(Math.random() * chars.length)];
+                mx.fillStyle = dark ? (Math.random() > .975 ? '#d6fff0' : '#00ff9c') : '#0a7a4a';
+                mx.fillText(ch, i * fs, drops[i] * fs);
+                if (drops[i] * fs > mc.height && Math.random() > .975) drops[i] = 0;
+                drops[i]++;
+            }
+        }, 55);
+    })();
     </script>
 </body>
 </html>
